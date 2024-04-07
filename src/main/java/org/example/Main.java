@@ -1,19 +1,55 @@
 package org.example;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import java.io.*;
+import java.util.Arrays;
+
+
 public class Main {
-    public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File("C://Users//79195//Desktop//IdeaProjects//shell_sort//src//main//java//org//example//data")));
+        String line = reader.readLine();
+        while (line != null) {
+            String[] lines = line.split(" ");
+            int[] array = new int[lines.length];
+            for (int i = 0; i < array.length; ++i){
+                array[i] = Integer.parseInt(lines[i]);
+            }
+            double start = System.nanoTime();
+            shellSort(array);
+            double end = System.nanoTime();
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+            System.out.println( (end - start) + " " + array.length);
+            line = reader.readLine();
+        }
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+    }
+
+    public static int shellSort(int[] array) {
+        for (int s = array.length / 2; s > 0; s /= 2) {
+            for (int i = s; i < array.length; ++i) {
+                int key = array[i];
+                int j = i - s;
+                while (j >= 0 && array[j] > key) {
+                    array[j + s] = array[j];
+                    j -= s;
+                }
+                array[j + s] = key;
+            }
         }
     }
+
+    //генератор данных
+    private static int[][] data(){
+        int a = (int) ((Math.random() * ((100 - 50) + 1)) + 50); // количество наборов
+        int[][] data = new int[a][];
+        for (int i = 0; i < a; ++i){
+            int b = (int) ((Math.random() * ((10000 - 100) + 1)) + 100); // количество элементов в наборе
+            data[i] = new int[b];
+            for (int j = 0; j < b; ++j){
+                data[i][j] = (int) (Math.random() * 10000);
+            }
+        }
+        return data;
+    }
+
 }
